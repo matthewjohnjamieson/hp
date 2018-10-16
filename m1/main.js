@@ -28,10 +28,10 @@ class Rational{
 function visual(b){
   for(let i = 0; i < b.length; i++){
     if(b[i] === 1){
-      ellipse((i*50)+150,height/2,50,50);
+      ellipse((i*50)+125,height/2,50,50);
     }
     else{
-      ellipse((i*50)+150,height/2,5,5);
+      ellipse((i*50)+125,height/2,5,5);
     }
   }
 }
@@ -66,14 +66,14 @@ function binparser(b){
 
 let binlist = [];
 let rat = new Rational(21,100); //rational number to evaluate
-const bin = binarygenerator(rat);
+let bin = binarygenerator(rat);
 
 /*setup function*/
 function setup() {
   createCanvas(500,500);
 
   frameRate(5);
-
+  
   //init list
   for(let i = 0; i < 5; i++)
     binlist.push(bin.next().value);
@@ -86,6 +86,17 @@ function draw() {
   visual(binlist); //display visual
   binlist.shift(); //shift list
   binlist.push(bin.next().value); //push next binary number to the back of the list
+}
+
+function mouseClicked(){
+    let num = window.prompt("enter a numerator", rat.numerator);
+    let denom = window.prompt("enter a denominator", rat.denominator);
+    rat.numerator = num;
+    rat.denominator = denom;
+    binlist = [];
+    bin = binarygenerator(rat);
+    for(let i = 0; i < 5; i++)
+        binlist.push(bin.next().value);
 }
 
 /*test the binary number generator*/
