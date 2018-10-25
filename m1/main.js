@@ -34,43 +34,14 @@ console.log(rnbvar);
 
 /*squad goal: generate binary representations for arbitrary series*/
 
-/*rational number class*/
-//proposal: normalize out the member functions to make program more functional
-//update: in the process of deprecating this class entirely
-class Rational{
-  constructor(n,d){
-    this.numerator = n;
-    this.denominator = d;
-  }
-  isbig(){
-    return (this.numerator >= this.denominator ? true : false);
-  }
-  subone(){
-    if(this.isbig())
-      this.numerator -= this.denominator;
-  }
-  tostring(){
-    console.log("(%d,%d)", this.numerator, this.denominator);
-  }
+/*functional rat class*/
+//TODO:add a way to specify length
+const createRat = (num,den,bin) => {
+  bin = blist(num,den,16);
+  return {num,
+          den,
+          bin};
 }
-
-/*functional rat class + functions*/
-const createRat = ({num=0, den=1, bin=[]}) => ({num,
-                                                den,
-                                                bin});
-
-//deprecated by generator re-fact
-function ratisbig(r){
-  return ((r.num >= r.den ? true : false));
-}
-//deprecated by generator re-fact
-function ratsubone(r){
-  if(ratisbig(r))
-    return (createRat({num: (r.num - r.den), den:r.den, bin:r.bin}));
-  else
-    return (createRat({num: r.num, den:r.den, bin:r.bin}));
-}
-
 
 /*lazily generate binary expansions for a given rational number*/
 function* binarygenerator(n,d){
@@ -88,8 +59,8 @@ function* binarygenerator(n,d){
 }
 
 /*generate a binary expansion of a given size*/
-function blist(rat, len){
-  let generator = binarygenerator(rat.num, rat.den);
+function blist(n,d,len){
+  let generator = binarygenerator(n,d);
   let thelist = [];
   for(let i = 0; i < len; i++)
     thelist.push(generator.next().value);
@@ -120,25 +91,13 @@ function binparser(b){
   return sum;
 }
 
-/*globals*/
-let binlist = [];
-let rat = new Rational(21,100); //rational number to evaluate
-let bin = binarygenerator(rat);
-
 /*setup function*/
 function setup() {
   createCanvas(500,500);
 
   frameRate(1);
   
-  //init list
-  for(let i = 0; i < 5; i++)
-    binlist.push(bin.next().value);
-
-  let r1 = createRat({num: 1,
-                      den: 10,
-                      bin:(blist((createRat({num:1,den:10})),16))
-                     });
+  let r1 = createRat(1,10);
 
   console.log(r1);
   
@@ -147,11 +106,9 @@ function setup() {
 /*draw loop*/
 function draw() {
   background(127);
-  visual(binlist); //display visual
-  binlist.shift(); //shift list
-  binlist.push(bin.next().value); //push next binary number to the back of the list
 }
 
+/*
 function mouseClicked(){
     let num = window.prompt("enter a numerator", rat.numerator);
     let denom = window.prompt("enter a denominator", rat.denominator);
@@ -162,29 +119,4 @@ function mouseClicked(){
     for(let i = 0; i < 5; i++)
         binlist.push(bin.next().value);
 }
-
-/*test the binary number generator*/
-//expected: a rotating "window" showing the first 3 digits
-// 1/10 = 0.0001001001001...
-function binarygeneratortest1(){
-  let rat = new Rational(1,10);  
-  const bin = binarygenerator(rat);
-  let binlist = [];
-  for(let i = 0; i < 5; i++)
-    binlist.push(bin.next().value);
-
-  for(let i = 0; i < 3; i++){
-    console.log(binlist);
-    binlist.shift();
-    binlist.push(bin.next().value);
-    console.log(binlist);
-  }
-
-  console.log( binparser(binlist));
-}
-
-//bonus junk data
- // print( binparser([0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1]));
-
-//test blist function
-  //console.log(blist((new Rational(1,10)), 16));
+*/
