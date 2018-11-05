@@ -34,16 +34,26 @@ console.log(rnbvar);
 
 /*squad goal: generate binary representations for arbitrary series*/
 
-/*functional rat class*/
-//TODO:add a way to specify length
+/*define a class for rationals which contains a bin expansion*/
+//in arg list, bin specifies length of bin expansion. in final returned obj,
+//bin holds the bin expansion
 const createRat = (num,den,bin) => {
-  bin = blist(num,den,16);
+  bin = blist(num,den,bin);
   return {num,
           den,
           bin};
 }
 
-/*lazily generate binary expansions for a given rational number*/
+/*generate a binary expansion of a given size (helps createRat)*/
+function blist(n,d,len){
+  let generator = binarygenerator(n,d); //call the bin generator
+  let thelist = [];
+  for(let i = 0; i < len; i++)
+    thelist.push(generator.next().value);
+  return thelist;
+}
+
+/*lazily generate binary expansions for a given rational number (helps blist)*/
 function* binarygenerator(n,d){
   while(1){
     n *= 2;
@@ -57,16 +67,6 @@ function* binarygenerator(n,d){
     }
   }
 }
-
-/*generate a binary expansion of a given size*/
-function blist(n,d,len){
-  let generator = binarygenerator(n,d);
-  let thelist = [];
-  for(let i = 0; i < len; i++)
-    thelist.push(generator.next().value);
-  return thelist;
-}
-
 
 /*generate a basic visual for the binary string*/
 function visual(b){
@@ -97,9 +97,11 @@ function setup() {
 
   frameRate(1);
   
-  let r1 = createRat(1,10);
-
+  var t0 = performance.now();
+  let r1 = createRat(1,3,512);
   console.log(r1);
+  var t1 = performance.now();
+  console.log("Call took " + (t1 - t0) + " milliseconds.")
   
 }
 
