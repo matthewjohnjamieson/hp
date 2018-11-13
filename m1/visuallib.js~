@@ -1,0 +1,37 @@
+/*library for visualization functions*/
+
+/*make a spikey circle*/
+function spikes(rat,rad,xpos,ypos){
+  drawcircle(polygonverts(xpos,ypos,rad,rat.bin.length));
+}
+
+/*generate a sequence of x,y coords for a polygon*/
+function polygonverts(x, y, radius, npoints) {
+  let angle = TWO_PI / npoints;
+  let scale = 0;
+  let count = 0;
+  let verts = [];
+  
+  for (let a = 0; a < TWO_PI; a += angle) {
+    if(binarray[count % binarray.length] === 1)
+      scale = 75;
+    else
+      scale = 0;
+    count++;
+    
+    let sx = x + cos(a) * (radius + scale);
+    let sy = y + sin(a) * (radius + scale);
+    verts.push({x : sx, y: sy});
+  }
+
+  return verts;
+}
+
+/*draw a shape from an array of verticies*/
+function drawcircle(v){
+  beginShape();
+  v.forEach(function(element){
+    vertex(element.x,element.y);
+  });
+  endShape(CLOSE);
+}

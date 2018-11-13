@@ -1,0 +1,37 @@
+
+/*generate a binary expansion of a given size (helps createRat)*/
+function blist(n,d,len){
+  let generator = binarygenerator(n,d); //call the bin generator
+  let thelist = [];
+  for(let i = 0; i < len; i++)
+    thelist.push(generator.next().value);
+  return thelist;
+}
+
+   
+/*lazily generate binary expansions for a given rational number (helps blist)*/
+function* binarygenerator(n,d){
+  while(1){
+    n *= 2;
+    if(n > d){
+      while(n > d) //normalize for larger numbers
+        n -= d;
+        yield 1;
+      }
+      else{
+        yield 0;
+     }
+  }
+}
+
+
+/*parse a binary number into a decimal*/
+function binparser(b){
+  let sum = 0;
+  for(let i = 0 ; i < b.length; i++){
+    if(b[i] === 1){
+      sum += (1/Math.pow(2,(i+1)));
+    }
+  }  
+  return sum;
+}
