@@ -20,23 +20,25 @@ function visual(b){
 */
 
 
-
-let testrat = createRat((3*1712+1),(3*(10**4)),2**2);
+let testrat = createRat((3*1712+1),(3*(10**4)),2**3);
+let testrat2 = createRat(1,3,2**3);
 
 /*setup function*/
 function setup() {
-  createCanvas(500,500);
-  frameRate(1);
+  createCanvas(1000,500);
+  frameRate(30);
   
-  textviz(testrat)
+  textviz(testrat);
+ 
+  //spikes(testrat,100,width/2,height/2);  
 
-  spikes(testrat,100,width/2,height/2);
-  
 }
 
 /*draw loop*/
 function draw() {
-  
+  background(255);
+  //squigglyline(0,250,mouseY,testrat);
+  squigglyline(0,250,mouseY,testrat2);
 }
 
 /*

@@ -41,3 +41,14 @@ function drawcircle(v){
   });
   endShape(CLOSE);
 }
+
+/*squigglyline: x,y,rational -> draw, draw a line that squiggles */
+//TODO: position control(make y optional?), scaling, strokeweight?
+function squigglyline(x,y,scale,r){
+  let bincopy = r.bin.slice();
+  beginShape();
+  for(let i = 0; i < width; i+= (width / r.bin.length) ){
+    vertex(i, y + bincopy.shift() * scale);
+  }
+  endShape();
+}
